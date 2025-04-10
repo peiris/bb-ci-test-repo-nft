@@ -13,16 +13,17 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: nightly
+      - name: Install BuildBear's Foundry Fork
+        run: |
+          curl -L https://raw.githubusercontent.com/BuildBearLabs/foundry/master/foundryup/install | bash
+          foundryup
+        shell: bash
 
       - name: Show Forge version
         run: forge --version
         
       - name: test_ci
-        uses: BuildBearLabs/buildbear_x_action@v1.5.0
+        uses: BuildBearLabs/buildbear_x_action@v1.6.0
 
         with: 
           network: |
@@ -33,5 +34,5 @@ jobs:
             ]
 
           deploy-command: "make exe"
-          buildbear-token: "a"  
+          buildbear-token: "${{ secrets.BUILDBEAR_TOKEN }}"  
          
