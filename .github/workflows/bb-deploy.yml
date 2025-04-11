@@ -13,20 +13,6 @@ jobs:
         with:
           submodules: recursive
 
-      # - name: Install BuildBear's Foundry Fork
-      #   run: |
-      #     export FOUNDRY_DIR="$HOME/.foundry"
-      #     export FOUNDRY_BIN_DIR="$FOUNDRY_DIR/bin"
-      #     mkdir -p "$FOUNDRY_BIN_DIR"
-      #     curl -fL https://raw.githubusercontent.com/BuildBearLabs/foundry/master/foundryup/foundryup -o "$FOUNDRY_BIN_DIR/foundryup"
-      #     chmod +x "$FOUNDRY_BIN_DIR/foundryup"
-      #     "$FOUNDRY_BIN_DIR/foundryup"
-
-      # - name: Install Foundry
-      #   uses: foundry-rs/foundry-toolchain@v1
-      #   with:
-      #     version: nightly
-
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -66,9 +52,6 @@ jobs:
           cp target/debug/forge $HOME/.config/.foundry/bin/
           echo "PATH=$HOME/.config/.foundry/bin:$PATH" >> $GITHUB_ENV
         shell: bash
-
-      # - name: Add Foundry to PATH
-      #   run: echo "$HOME/.foundry/bin" >> $GITHUB_PATH
 
       - name: Show Forge version
         run: forge --version
