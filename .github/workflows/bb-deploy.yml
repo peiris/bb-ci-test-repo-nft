@@ -13,22 +13,22 @@ jobs:
         with:
           submodules: recursive
 
-      # - name: Install BuildBear's Foundry Fork
-      #   run: |
-      #     export FOUNDRY_DIR="$HOME/.foundry"
-      #     export FOUNDRY_BIN_DIR="$FOUNDRY_DIR/bin"
-      #     mkdir -p "$FOUNDRY_BIN_DIR"
-      #     curl -fL https://raw.githubusercontent.com/BuildBearLabs/foundry/master/foundryup/foundryup -o "$FOUNDRY_BIN_DIR/foundryup"
-      #     chmod +x "$FOUNDRY_BIN_DIR/foundryup"
-      #     "$FOUNDRY_BIN_DIR/foundryup"
+      - name: Install BuildBear's Foundry Fork
+        run: |
+          export FOUNDRY_DIR="$HOME/.foundry"
+          export FOUNDRY_BIN_DIR="$FOUNDRY_DIR/bin"
+          mkdir -p "$FOUNDRY_BIN_DIR"
+          curl -fL https://raw.githubusercontent.com/BuildBearLabs/foundry/master/foundryup/foundryup -o "$FOUNDRY_BIN_DIR/foundryup"
+          chmod +x "$FOUNDRY_BIN_DIR/foundryup"
+          "$FOUNDRY_BIN_DIR/foundryup"
 
-      - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: nightly
+      # - name: Install Foundry
+      #   uses: foundry-rs/foundry-toolchain@v1
+      #   with:
+      #     version: nightly
 
-      # - name: Add Foundry to PATH
-      #   run: echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+      - name: Add Foundry to PATH
+        run: echo "$HOME/.foundry/bin" >> $GITHUB_PATH
 
       - name: Show Forge version
         run: forge --version
@@ -45,5 +45,8 @@ jobs:
             ]
 
           deploy-command: "make exe"
-          buildbear-token: "${{ secrets.BUILDBEAR_TOKEN }}"  
+          buildbear-token: "${{ secrets.BUILDBEAR_TOKEN }}"
+        env:
+          BUILDBEAR_RPC_URL: ${{ secrets.BUILDBEAR_RPC_URL }}
+          MNEMONIC: ${{ secrets.MNEMONIC }}
          
