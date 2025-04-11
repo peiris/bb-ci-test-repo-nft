@@ -34,7 +34,7 @@ jobs:
         run: forge --version
         
       - name: test_ci
-        uses: BuildBearLabs/buildbear_x_action@v1.6.0
+        uses: BuildBearLabs/buildbear_x_action@fix/envError
 
         with: 
           network: |
@@ -46,7 +46,4 @@ jobs:
 
           deploy-command: "make exe"
           buildbear-token: "${{ secrets.BUILDBEAR_TOKEN }}"
-        env:
-          BUILDBEAR_RPC_URL: ${{ secrets.BUILDBEAR_RPC_URL }}
-          MNEMONIC: ${{ secrets.MNEMONIC }}
          
