@@ -13,28 +13,68 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install BuildBear's Foundry Fork
-        run: |
-          export FOUNDRY_DIR="$HOME/.foundry"
-          export FOUNDRY_BIN_DIR="$FOUNDRY_DIR/bin"
-          mkdir -p "$FOUNDRY_BIN_DIR"
-          curl -fL https://raw.githubusercontent.com/BuildBearLabs/foundry/master/foundryup/foundryup -o "$FOUNDRY_BIN_DIR/foundryup"
-          chmod +x "$FOUNDRY_BIN_DIR/foundryup"
-          "$FOUNDRY_BIN_DIR/foundryup"
+      # - name: Install BuildBear's Foundry Fork
+      #   run: |
+      #     export FOUNDRY_DIR="$HOME/.foundry"
+      #     export FOUNDRY_BIN_DIR="$FOUNDRY_DIR/bin"
+      #     mkdir -p "$FOUNDRY_BIN_DIR"
+      #     curl -fL https://raw.githubusercontent.com/BuildBearLabs/foundry/master/foundryup/foundryup -o "$FOUNDRY_BIN_DIR/foundryup"
+      #     chmod +x "$FOUNDRY_BIN_DIR/foundryup"
+      #     "$FOUNDRY_BIN_DIR/foundryup"
 
       # - name: Install Foundry
       #   uses: foundry-rs/foundry-toolchain@v1
       #   with:
       #     version: nightly
 
-      - name: Add Foundry to PATH
-        run: echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      # Cache Foundry repository
+      - name: Cache Foundry repository
+        uses: actions/cache@v3
+        with:
+          path: foundry
+          key: ${{ runner.os }}-foundry-${{ hashFiles('**/foundry/.gitmodules') }}
+          restore-keys: |
+            ${{ runner.os }}-foundry-
+
+      # Cache build artifacts
+      - name: Cache build artifacts
+        uses: actions/cache@v3
+        with:
+          path: $HOME/.config/.foundry/bin
+          key: ${{ runner.os }}-forge-${{ hashFiles('foundry/Cargo.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-forge-
+
+      - name: Clone Foundry repository
+        run: |
+          if [ ! -d "foundry" ]; then
+            git clone https://github.com/BuildBearLabs/foundry.git
+          fi
+        shell: bash
+
+      - name: Build Foundry from source
+        run: |
+          cd foundry
+          cargo build
+          mkdir -p $HOME/.config/.foundry/bin
+          cp target/debug/forge $HOME/.config/.foundry/bin/
+          echo "PATH=$HOME/.config/.foundry/bin:$PATH" >> $GITHUB_ENV
+        shell: bash
+
+      # - name: Add Foundry to PATH
+      #   run: echo "$HOME/.foundry/bin" >> $GITHUB_PATH
 
       - name: Show Forge version
         run: forge --version
         
       - name: test_ci
-        uses: BuildBearLabs/buildbear_x_action@fix/envError
+        uses: BuildBearLabs/buildbear_x_action@1.6.0
 
         with: 
           network: |
