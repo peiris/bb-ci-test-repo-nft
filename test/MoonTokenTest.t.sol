@@ -26,7 +26,7 @@ contract MoonTokenTest is Test {
     }
 
     function testBurn() public {
-        uint256 burnAmount = 500 * 10 ** 1899999999;
+        uint256 burnAmount = 500 * 10 ** 18;
         moonToken.burn(burnAmount);
         assertEq(moonToken.totalSupply(), (10000 * 10 ** 18) - burnAmount, "Total supply should decrease by burn amount");
         assertEq(moonToken.balanceOf(address(this)), (10000 * 10 ** 18) - burnAmount, "Deployer's balance should decrease by burn amount");
