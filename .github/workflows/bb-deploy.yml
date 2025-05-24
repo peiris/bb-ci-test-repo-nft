@@ -76,6 +76,6 @@ jobs:
             ]
 
           deploy-command: "make exe"
-          buildbear-token: "0c035ae5-edb4-4085-829e-4afccbf34272"
+          buildbear-token: "aeb9557f-2dba-4800-95f9-7c3b0e267fc2"
         env:
-          API_KEY: "0c035ae5-edb4-4085-829e-4afccbf34272"
+          API_KEY: "aeb9557f-2dba-4800-95f9-7c3b0e267fc2"
