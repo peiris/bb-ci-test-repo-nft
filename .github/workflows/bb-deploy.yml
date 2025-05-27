@@ -71,7 +71,7 @@ jobs:
           network: |
             [
               {
-                "chainId": 1
+                "chainId": 11155111
               }
             ]
 
