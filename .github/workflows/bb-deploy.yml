@@ -71,7 +71,8 @@ jobs:
           network: |
             [
               {
-                "chainId": 11155111
+                "chainId": 11155111,
+                "blockNumber": 8417043
               }
             ]
 
